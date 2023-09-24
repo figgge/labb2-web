@@ -48,67 +48,126 @@ onMounted(() => {
 </script>
 
 <template>
-                                      <div class="form">
-
-                                      <div class="noteHeadline">
-                                    <h3>Add note:</h3>
-                                      </div>
-
-                                      <form :class="{ light: !darkTheme }" @submit="addNote">
-
-                                  <div class="titleLabel">
-                                      <label>Title: </label>
-                                      </div>
-                                      <div class="titleInput">
-                                      <input type="text" v-model="noteTitle" placeholder="Title..">
-                                    </div>
-
-                                    <div class="content">
-                                      <label>Content: </label>
-                                      <textarea v-model="noteContent" placeholder="Note.."></textarea>
-                                      </div>
-
-                              <div class="submit">
-                                <label id="submit-image">
-                                <input id="btn" type="submit" value="Add note">
-                                <img :src="imagePath + 'Gartoon_actions_hexwrite.svg.png'" alt="pen">
-                                </label>
-                          </div>
-                              </form>
-                              </div>
-                          <!--  -->
+  <div class="form">
+    <div class="noteHeadline">
+      <h2 :class="{lightText: !darkTheme}">Add note:</h2>
+    </div>
+    <form :class="{ light: !darkTheme }" @submit="addNote">
+      <div class="titleLabel">
+        <label>Title: </label>
+      </div>
+      <div class="titleInput">
+        <input type="text" v-model="noteTitle" placeholder="Title..">
+      </div>
+      <div class="content">
+        <label>Content: </label>
+        <textarea v-model="noteContent" placeholder="Note.."></textarea>
+      </div>
+      <div class="submit" >
+        <label class="submitImage" :class="{lightImage: !darkTheme}">
+          <input id="btn" type="submit" value="Add note" >
+          <img :src="imagePath + 'Gartoon_actions_hexwrite.svg.png'" alt="pen">
+        </label>
+      </div>
+    </form>
+  </div>
 </template>
 
 <style scoped>
+
+.noteHeadline {
+  color: #053B50
+}
+
 form {
-  display: grid;
-  grid-template-columns: repeat(4, 100px);
-  gap: 10px;
-  background: #EEEEEE;
-  border: solid 2px #053B50;
-  width: 400px;
-  padding: 10px;
-  border-radius: 10px;
+display: grid;
+grid-template-columns: repeat(4, 1fr);
+gap: 10px;
+background: #EEEEEE;
+border: solid 2px #053B50;
+width: 300px;
+padding: 10px;
+border-radius: 10px;
+}
+label {
+font-weight: 600;
 }
 
 input {
-  border: solid 1px black;
+border: solid 1px #053B50;
+border-radius: 5px;
+width: 290px;
 }
 
-#submit-image img {
-  border: solid 1px black;
-  border-radius: 10px;
-  background: #053B50;
-  opacity: 1;
-  transition: 0.3s;
-  width: 40px;
+.submitImage img {
+border: solid 1px #053B50;
+border-radius: 10px;
+background: #053B50;
+opacity: 1;
+transition: 0.3s;
+width: 40px;
 }
+
+.titleLabel {
+grid-column: 1 / span 3;
+justify-self: start;
+}
+
+.titleInput {
+grid-column: 1 / span 4;
+justify-self: start;
+}
+
+.content {
+  grid-column: 1 / span 4;
+  grid-row: span 2;
+}
+
+.content textarea{
+  grid-column: 1 / span 4;
+  border: solid 1px #053B50;
+  height: 72px;
+  width: 290px;
+  border-radius: 5px;
+  font-size: 15px;
+  margin-top: 5px;
+}
+
 
 #btn {
-  display: none;
+display: none;
 }
 
+.submit {
+  grid-column: 4 / span 1;
+  justify-self: end;
+}
 
+.light {
+  background: #053B50;
+  color: #EEEEEE;
+  border: solid 2px #EEEEEE;
+}
 
+.lightImage img{
+  background: #EEEEEE;
+}
+.lightText {
+  color: #EEEEEE;
+}
 
+@media (min-width: 450px) {
+  form {
+    width: 400px;
+  }
+
+  input {
+    width: 300px;
+  }
+  
+  .content textarea {
+    width: 390px;
+  }
+  
+}
 </style>

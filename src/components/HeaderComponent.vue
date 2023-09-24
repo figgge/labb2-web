@@ -14,21 +14,19 @@ const switchTheme = () => {
 </script>
 
 <template>
-        <div class="header" :class="{ light: !darkTheme }">
-        <div>
-        <img alt="Logo" class="logo" src="../assets/img/Notepad_icon.svg" />
-        </div>
-        <div id="headline">
-        <h1 :class="{ light: !darkTheme }">Super-Notes</h1>
-      </div>
-      <div class="button">
-      <button v-if="darkTheme" :class="{ light: darkTheme }" @click="switchTheme" >Switch theme</button>
-      <button v-else :class="{ light: darkTheme }" @click="switchTheme">Switch theme</button>
-      </div>
-      </div>
-  <!--
- -->     
-<!--  -->
+  <div class="header" :class="{light: !darkTheme}">
+  <div>
+    <img alt="Logo" class="logo" src="../assets/img/Notepad_icon.svg" />
+  </div>
+  <div id="headline">
+    <h1 :class="{ light: !darkTheme }">Super-Notes</h1>
+  </div>
+  <div class="button">
+    <button v-if="darkTheme" :class="{ light: darkTheme }" @click="switchTheme" >Switch theme</button>
+    <button v-else :class="{ light: darkTheme }" @click="switchTheme">Switch theme</button>
+  </div>
+  </div>
+
 </template>
 
 <style scoped>
@@ -36,8 +34,9 @@ const switchTheme = () => {
   position: fixed;
   display: grid;
   grid-template-columns: repeat(8, 1fr);
-  /* background: v-bind('theme.background'); */
+
   background: #053B50;
+  color: #EEEEEE;
   gap: 20px;
   padding: 10px;
   top:0;
@@ -50,8 +49,6 @@ const switchTheme = () => {
 }
 
 h1 {
-   /* color: v-bind('theme.color'); */
-  color: #EEEEEE;
   font-style: italic;
 }
 .logo {
@@ -64,8 +61,6 @@ color: #EEEEEE;
 border-radius: 10px;
 font-size: 20px;
 font-weight: 600;
-/* background: v-bind('theme.background'); */
-/* color: v-bind('theme.color'); */
 }
 
 .button {
@@ -76,10 +71,5 @@ font-weight: 600;
 .light {
   background: #EEEEEE;
   color: #053B50;
-  /* border: solid 2px #FCAEAE; */
 }
-
-/*  */
-/*  */
-
 </style>

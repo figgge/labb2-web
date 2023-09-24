@@ -3,7 +3,7 @@ import { ref, onMounted, watch, nextTick } from 'vue';
 defineProps({
   darkTheme: {
     type: Boolean,
-    req: true
+    required: true
   }
 })
 
@@ -15,6 +15,7 @@ watch(notes, (note) => {
 }, {
   deep: true
 })
+
 
 onMounted(() => {
   if (localStorage.getItem('notes') !== null) {
@@ -39,21 +40,21 @@ const deleteNote = (note) => {
 </script>
 
 <template>
-  <div class="note" :class="{ noteImportant: note.noteImportant, noteDone: note.noteDone, light: !darkTheme }" v-for="note in  notes " :key="note">
-  <div class="note-title">{{ note.noteTitle }}</div>
-  <div class="note-content">{{ note.noteContent }}</div>
-  <div class="note-important" v-if="note.noteImportant"><img :src="imagePath + 'Nuvola_apps_important.svg'" alt="important"></div>
-  <div class="note-important2"><input @change="note.noteImportant = !note.noteImportant" class="importantCheckbox"  type="checkbox" :checked="note.noteImportant" name="important">
-  <label id="importantLabel">Important</label>
+  <div v-for="note in notes " :key="note" class="note" :class="{light: !darkTheme ,noteImportant: note.noteImportant, noteDone: note.noteDone, lightImportant: !darkTheme && note.noteImportant}">
+    <div class="note-title">{{ note.noteTitle }}</div>
+    <div class="note-content">{{ note.noteContent }}</div>
+    <div class="note-important" v-if="note.noteImportant"><img :src="imagePath + 'Nuvola_apps_important.svg'" alt="important"></div>
+    <div class="note-important2"><input @change="note.noteImportant = !note.noteImportant" class="checkbox" type="checkbox" :checked="note.noteImportant" name="important">
+      <label>Important</label>
+    </div>
+    <div class="note-done"><input @change="note.noteDone = !note.noteDone" class="checkbox" :checked="note.noteDone" type="checkbox" name="done">
+      <label>Done</label>
+    </div>
+    <div class="note-date">{{ note.noteDate }}</div>
+    <div class="note-delete">
+      <button :class="{lightButton: !darkTheme}" @click="deleteNote(note)">Delete</button>
+    </div>
   </div>
-  <div class="note-done"><input @change="note.noteDone = !note.noteDone" class="doneCheckbox" :checked="note.noteDone" type="checkbox"
-  name="done">
-  <label class="doneLabel">Done</label>
-  </div>
-  <div class="note-date">{{ note.noteDate }}</div>
-  <div class="note-delete"><button @click="deleteNote(note)">Delete</button
-></div>
-</div>
 </template>
 
 <style scoped>
@@ -62,6 +63,7 @@ const deleteNote = (note) => {
   grid-template-columns: 1fr 1fr 1fr 1fr;
   grid-template-rows: auto;
   background: #EEEEEE;
+  color: #053B50;
   border: solid 2px #053B50;
   border-radius: 5px;
   width: fit-content;
@@ -80,6 +82,7 @@ const deleteNote = (note) => {
 .note-content {
   grid-column: 1 / span 4;
   margin-bottom: 10px;
+  font-size: medium;
 }
 
 .note-date {
@@ -96,16 +99,16 @@ const deleteNote = (note) => {
 
 
 .noteImportant {
-  background: linear-gradient(300deg, #F6F4EB, #f0c2c2);
+  background: linear-gradient(600deg, #EEEEEE, #f0c2c2);
 }
 
 .note-important img {
   width: 25px;
 }
 
-/* .note-important2 {
+.note-important2 {
   grid-column: 1 / span 1;
-} */
+}
 
 .note-delete {
   grid-column: 4 / span 1;
@@ -124,5 +127,28 @@ button {
   background: #053B50;
   color: #EEEEEE;
   border-radius: 5px;
+}
+
+.checkbox {
+  accent-color: #053B50;
+  width: 20px;
+  height: 20px;
+  vertical-align: middle;
+}
+
+.light {
+  background: #053B50;
+  color: #EEEEEE;
+  border: solid 1px #EEEEEE;
+}
+
+.lightImportant {
+  background: linear-gradient(600deg, #f8f8f8, #ffb2b2);
+  color: #053B50;
+}
+
+.lightButton {
+  background: #EEEEEE;
+  color: #053B50;
 }
 </style>
