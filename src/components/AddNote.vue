@@ -1,7 +1,7 @@
 <script setup>
 import { ref, watch, onMounted } from 'vue';
 defineProps({
-  blueTheme: {
+  darkTheme: {
     type: Boolean,
     req: true
   }
@@ -11,8 +11,6 @@ const notes = ref([])
 const noteTitle = ref('')
 const noteContent = ref('')
 const noteIndex = ref(0);
-const noteImportant = ref(false)
-const noteDone = ref(false)
 const imagePath = './src/assets/img/'
 
 const addNote = () => {
@@ -22,13 +20,12 @@ const addNote = () => {
       noteTitle: noteTitle.value,
       noteContent: noteContent.value,
       noteDate: new Date().toLocaleString('se-sv'),
-      noteImportant: noteImportant.value,
-      noteDone: noteDone.value
+      noteImportant: false,
+      noteDone: false
     })
     noteIndex.value++
     noteTitle.value = ''
     noteContent.value = ''
-    noteImportant.value = null
   }
 }
 
@@ -51,36 +48,67 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="form">
+                                      <div class="form">
 
-    <div class="noteHeadline">
-      <h3>Add note:</h3>
-    </div>
+                                      <div class="noteHeadline">
+                                    <h3>Add note:</h3>
+                                      </div>
 
-    <form @submit.prevent="addNote">
-      <div class="titleLabel">
-        <label>Title: </label>
-      </div>
-      <div class="titleInput">
-        <input type="text" v-model="noteTitle" placeholder="Title..">
-      </div>
+                                      <form :class="{ light: !darkTheme }" @submit="addNote">
 
-      <div class="content">
-        <label>Content: </label>
-        <textarea v-model="noteContent" placeholder="Note.."></textarea>
-      </div>
-      <!-- <div class="important">
-    <input v-model="noteImportant" type="checkbox" id="important" value="false" name="important">
-    <label id="importantLabel"> Important</label>
-  </div> -->
-      <div class="submit">
-        <label id="submit-image">
-          <input id="btn" type="submit" value="Add note">
-          <img :src="imagePath + 'Gartoon_actions_hexwrite.svg.png'" alt="pen">
-        </label>
-      </div>
-    </form>
-  </div>
+                                  <div class="titleLabel">
+                                      <label>Title: </label>
+                                      </div>
+                                      <div class="titleInput">
+                                      <input type="text" v-model="noteTitle" placeholder="Title..">
+                                    </div>
+
+                                    <div class="content">
+                                      <label>Content: </label>
+                                      <textarea v-model="noteContent" placeholder="Note.."></textarea>
+                                      </div>
+
+                              <div class="submit">
+                                <label id="submit-image">
+                                <input id="btn" type="submit" value="Add note">
+                                <img :src="imagePath + 'Gartoon_actions_hexwrite.svg.png'" alt="pen">
+                                </label>
+                          </div>
+                              </form>
+                              </div>
+                          <!--  -->
 </template>
 
-<style scoped></style>
+<style scoped>
+form {
+  display: grid;
+  grid-template-columns: repeat(4, 100px);
+  gap: 10px;
+  background: #EEEEEE;
+  border: solid 2px #053B50;
+  width: 400px;
+  padding: 10px;
+  border-radius: 10px;
+}
+
+input {
+  border: solid 1px black;
+}
+
+#submit-image img {
+  border: solid 1px black;
+  border-radius: 10px;
+  background: #053B50;
+  opacity: 1;
+  transition: 0.3s;
+  width: 40px;
+}
+
+#btn {
+  display: none;
+}
+
+
+
+
+</style>

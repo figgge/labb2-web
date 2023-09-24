@@ -1,7 +1,7 @@
 <script setup>
-import { ref, onMounted, nextTick, watch } from 'vue';
+import { ref, onMounted, watch, nextTick } from 'vue';
 defineProps({
-  blueTheme: {
+  darkTheme: {
     type: Boolean,
     req: true
   }
@@ -10,6 +10,11 @@ defineProps({
 const notes = ref([])
 const imagePath = './src/assets/img/'
 
+watch(notes, (note) => {
+  localStorage.setItem('notes', JSON.stringify(note))
+}, {
+  deep: true
+})
 
 onMounted(() => {
   if (localStorage.getItem('notes') !== null) {
@@ -19,40 +24,105 @@ onMounted(() => {
   };
 })
 
-watch(notes, (note) => {
-  localStorage.setItem('notes', JSON.stringify(note))
-}, {
-  deep: true
-})
-
 nextTick(() => {
   notes.value = JSON.parse(localStorage.getItem('notes'))
 })
 
+
 const deleteNote = (note) => {
   notes.value = notes.value.filter((n) => n !== note) || []
+  location.reload() // ← nödlösning
+
 }
 
 
 </script>
 
 <template>
-  <div class="note" :class="{ noteImportant: note.noteImportant, noteDone: note.noteDone }" v-for="note in  notes "
-    :key="note">
-    <div class="note-title">{{ note.noteTitle }}</div>
-    <div class="note-content">{{ note.noteContent }}</div>
-    <div class="note-important" v-if="note.noteImportant"><img :src="imagePath + 'Nuvola_apps_important.svg'"
-        alt="important"></div>
-    <div class="note-important2"><input @change="note.noteImportant = !note.noteImportant" class="importantCheckbox"
-        type="checkbox" name="important">
-      <label id="importantLabel">Important</label>
-    </div>
-    <div class="note-done"><input @change="note.noteDone = !note.noteDone" class="doneCheckbox" type="checkbox"
-        name="done">
-      <label class="doneLabel">Done</label>
-    </div>
-    <div class="note-date">{{ note.noteDate }}</div>
-    <div class="note-delete"><button @click="deleteNote(note)">Delete</button></div>
+  <div class="note" :class="{ noteImportant: note.noteImportant, noteDone: note.noteDone, light: !darkTheme }" v-for="note in  notes " :key="note">
+  <div class="note-title">{{ note.noteTitle }}</div>
+  <div class="note-content">{{ note.noteContent }}</div>
+  <div class="note-important" v-if="note.noteImportant"><img :src="imagePath + 'Nuvola_apps_important.svg'" alt="important"></div>
+  <div class="note-important2"><input @change="note.noteImportant = !note.noteImportant" class="importantCheckbox"  type="checkbox" :checked="note.noteImportant" name="important">
+  <label id="importantLabel">Important</label>
   </div>
+  <div class="note-done"><input @change="note.noteDone = !note.noteDone" class="doneCheckbox" :checked="note.noteDone" type="checkbox"
+  name="done">
+  <label class="doneLabel">Done</label>
+  </div>
+  <div class="note-date">{{ note.noteDate }}</div>
+  <div class="note-delete"><button @click="deleteNote(note)">Delete</button
+></div>
+</div>
 </template>
-<style scoped></style>
+
+<style scoped>
+.note {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-template-rows: auto;
+  background: #EEEEEE;
+  border: solid 2px #053B50;
+  border-radius: 5px;
+  width: fit-content;
+  max-width: 400px;
+  margin-top: 5px;
+  padding: 5px;
+}
+
+.note-title {
+  grid-column: 1 / span 3;
+  margin-bottom: 10px;
+  font-weight: 600;
+  font-size: large;
+}
+
+.note-content {
+  grid-column: 1 / span 4;
+  margin-bottom: 10px;
+}
+
+.note-date {
+  grid-column: 3 / span 1;
+  font-style: italic;
+  opacity: 0.7;
+}
+
+.note-important {
+  grid-row: 1 / span 1;
+  grid-column: 4 / span 1;
+  justify-self: end;
+}
+
+
+.noteImportant {
+  background: linear-gradient(300deg, #F6F4EB, #f0c2c2);
+}
+
+.note-important img {
+  width: 25px;
+}
+
+/* .note-important2 {
+  grid-column: 1 / span 1;
+} */
+
+.note-delete {
+  grid-column: 4 / span 1;
+  justify-self: end;
+  align-self: end;
+}
+
+.noteDone {
+  opacity: 0.5;
+  text-decoration: line-through;
+}
+
+button {
+  font-size: small;
+  font-weight: bold;
+  background: #053B50;
+  color: #EEEEEE;
+  border-radius: 5px;
+}
+</style>
