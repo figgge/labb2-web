@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted, watch, nextTick } from 'vue';
+import { ref, onMounted, watch } from 'vue';
 defineProps({
   darkTheme: {
     type: Boolean,
@@ -9,6 +9,16 @@ defineProps({
 
 const notes = ref([])
 const imagePath = './src/assets/img/'
+
+const checkImportant = (note) => {
+  note.noteImportant =  !note.noteImportant
+  location.reload()
+}
+
+const checkDone = (note) => {
+  note.noteDone =  !note.noteDone
+  location.reload()
+}
 
 watch(notes, (note) => {
   localStorage.setItem('notes', JSON.stringify(note))
@@ -25,11 +35,6 @@ onMounted(() => {
   };
 })
 
-nextTick(() => {
-  notes.value = JSON.parse(localStorage.getItem('notes'))
-})
-
-
 const deleteNote = (note) => {
   notes.value = notes.value.filter((n) => n !== note) || []
   location.reload() // ← nödlösning
@@ -44,10 +49,10 @@ const deleteNote = (note) => {
     <div class="note-title">{{ note.noteTitle }}</div>
     <div class="note-content">{{ note.noteContent }}</div>
     <div class="note-important" v-if="note.noteImportant"><img :src="imagePath + 'Nuvola_apps_important.svg'" alt="important"></div>
-    <div class="note-important2"><input @change="note.noteImportant = !note.noteImportant" class="checkbox" type="checkbox" :checked="note.noteImportant" name="important">
+    <div class="note-important2"><input @change="checkImportant(note)" class="checkbox" type="checkbox" :checked="note.noteImportant" name="important">
       <label>Important</label>
     </div>
-    <div class="note-done"><input @change="note.noteDone = !note.noteDone" class="checkbox" :checked="note.noteDone" type="checkbox" name="done">
+    <div class="note-done"><input @change="checkDone(note)" class="checkbox" :checked="note.noteDone" type="checkbox" name="done">
       <label>Done</label>
     </div>
     <div class="note-date">{{ note.noteDate }}</div>

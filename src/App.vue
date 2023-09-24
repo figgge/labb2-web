@@ -43,7 +43,8 @@ main {
   background: v-bind('theme.background');
   margin: -10px;
   padding: 10px;
-  height: 800px;
+  min-height: 800px;
+  height: fit-content;
   margin-top: 150px;
 }
 

@@ -11,6 +11,8 @@ const notes = ref([])
 const noteTitle = ref('')
 const noteContent = ref('')
 const noteIndex = ref(0);
+const noteImportant = ref()
+const noteDone = ref()
 const imagePath = './src/assets/img/'
 
 const addNote = () => {
@@ -20,8 +22,8 @@ const addNote = () => {
       noteTitle: noteTitle.value,
       noteContent: noteContent.value,
       noteDate: new Date().toLocaleString('se-sv'),
-      noteImportant: false,
-      noteDone: false
+      noteImportant: noteImportant.value,
+      noteDone: noteDone.value
     })
     noteIndex.value++
     noteTitle.value = ''

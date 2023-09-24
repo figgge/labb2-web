@@ -8,9 +8,6 @@ const switchTheme = () => {
   darkTheme.value = !darkTheme.value
   emit('switchTheme', darkTheme.value)
 }
-//
-
-
 </script>
 
 <template>
